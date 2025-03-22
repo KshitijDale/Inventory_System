@@ -1,0 +1,12 @@
+lab-inventory-backend/node_modules/
+lab-inventory-backend/.env
+lab-inventory-frontend/node_modules/
+lab-inventory-frontend/.DS_Store
+lab-inventory-frontend/.env.local
+lab-inventory-frontend/.env.development.local
+lab-inventory-frontend/.env.test.local
+lab-inventory-frontend/.env.production.local
+
+lab-inventory-frontend/npm-debug.log*
+lab-inventory-frontend/yarn-debug.log*
+lab-inventory-frontend/yarn-error.log*
