@@ -11,18 +11,19 @@ const VendorOfProduct = require("../models/VendorOfProduct");
 
 const addtoDatabase = asynchandler(async (vendor_id, new_bill_id, product)=>{
 
-    const {product_name, quantity,price} = product;
+    const {product_name,pack, mfg, quantity,price} = product;
     let product_detail = await Product.findOneAndUpdate(
-        {prd_name: product_name},
+        {prd_name: product_name, pack:pack || "None", mfg:mfg || "Not Selected"},
         {   
             $inc : {quant : quantity},
             $set: {price: price}
         },
         {new : true}
     );
+
     if(!product_detail){
         // here write the code to add the product
-        product_detail = await Product.create({prd_name: product_name, quant: quantity, price: price});
+        product_detail = await Product.create({prd_name: product_name,pack:pack || "None", mfg:mfg || "Not Selected", quant: quantity, price: price});
     }
     const new_bill_item = await BillItem.create({bill : new_bill_id, product : product_detail._id, quantity: quantity, price:price});
     let new_vendorOfProduct =  await VendorOfProduct.findOneAndUpdate({product: product_detail._id, vendor: vendor_id},
@@ -39,6 +40,7 @@ const addProducts = async (vendor_id, new_bill_id, product_details)=>{
     const productArray = Object.values(product_details);
     await Promise.all(productArray.map(product=>addtoDatabase(vendor_id, new_bill_id, product)));
 
+
 }
 
 exports.addInventory = asynchandler(async (req,res)=>{
@@ -46,6 +48,7 @@ exports.addInventory = asynchandler(async (req,res)=>{
     if (!vendor_name || !bill_date || !bill_amount || !product_details) {
         throw new APIError(400, "Missing required fields");
     }
+
     const vendor_detail = await Vendor.findOne({name: vendor_name});
     if(!vendor_detail){
         throw new APIError(400, "Vendor Not Found- Add Vendor Details");

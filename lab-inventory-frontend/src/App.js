@@ -29,6 +29,10 @@ import AddToInventory from "./components/AddToInventory";
 import StockTransaction from "./Pages/Transaction";
 import PaymentsPage from "./components/payments";
 import ProductDetail from "./components/productDetails";
+import BillsList from "./components/Billslist";
+import BillDetails from "./components/BillDetails";
+import VendorManagement from "./components/VendorManagement";
+import LedgerPage from "./components/LedgerPage";
 
 const PrivateRoute = ({ children }) => {
     const token = localStorage.getItem("token");
@@ -44,7 +48,11 @@ function App() {
               <Route path="/add-inventory" element={<PrivateRoute><AddToInventory /></PrivateRoute>} />
               <Route path="/stock-transaction" element={<PrivateRoute><StockTransaction /></PrivateRoute>} />
               <Route path="/payments" element={<PrivateRoute><PaymentsPage /></PrivateRoute>} />
-              <Route path="/product/:prd_name" element={<PrivateRoute><ProductDetail /></PrivateRoute>} />
+              <Route path="/product/:prd_name/:pack/:mfg" element={<PrivateRoute><ProductDetail /></PrivateRoute>} />
+              <Route path="/bills" element={<PrivateRoute><BillsList /></PrivateRoute>} />
+              <Route path="/bill/:bill_id" element={<PrivateRoute><BillDetails /></PrivateRoute>} />
+              <Route path = "/vendor" element={<PrivateRoute><VendorManagement /></PrivateRoute>} />
+              <Route path="/ledger/:vendorId" element={<PrivateRoute><LedgerPage /></PrivateRoute>} />
           </Routes>
       </Router>
   );

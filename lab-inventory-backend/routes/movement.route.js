@@ -1,11 +1,11 @@
 const express = require('express');
 const { verifyJWT } = require("./../middleware/auth.middleware");
-const { movement, allMovements } = require("./../controller/movement.controller");
+const { movements, allMovements } = require("./../controller/movement.controller");
 
 router = express.Router();
 
 router.route('/')
-    .post(verifyJWT, movement)
+    .post(verifyJWT, movements)
     .get(verifyJWT,allMovements);
 
 module.exports = router;

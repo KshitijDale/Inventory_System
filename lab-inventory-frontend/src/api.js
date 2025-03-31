@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const API_BASE_URL = " http://10.30.37.130:5000/api";
-const API_BASE_URL = " http://localhost:5000/api"; // Adjust as per backend
+const API_BASE_URL = " http://192.168.0.84:5000/api"; // Adjust as per backend
 
 export const loginUser = async (credentials) => {
     return axios.post(`${API_BASE_URL}/user/login`, credentials);
@@ -14,8 +14,8 @@ export const getProducts = async (token, page = 1, limit = 25) => {
     });
 };
 
-export const getProductDetails = async(token, prd_name) =>{
-    return axios.get(`${API_BASE_URL}/product/get_detail?prd_name=${prd_name}`, {
+export const getProductDetails = async(token, prd_name,pack,mfg) =>{
+    return axios.get(`${API_BASE_URL}/product/get_detail?prd_name=${prd_name}&pack=${pack}&mfg=${mfg}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 };
@@ -46,13 +46,28 @@ export const getVendors = async (token) => {
     });
 };
 
-export const addStock = async(token, formData) => {
-    return axios.post(
-        `${API_BASE_URL}/movement`,
-        formData,
-        { headers: { Authorization: `Bearer ${token}` } }
-    );
-}
+export const addStockTransaction = async (token, stockData) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}/movement`, stockData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        });
+        return response;
+    } catch (error) {
+        console.error("Error adding stock transaction:", error);
+        throw error;
+    }
+};
+
+// export const addStock = async(token, formData) => {
+//     return axios.post(
+//         `${API_BASE_URL}/movement`,
+//         formData,
+//         { headers: { Authorization: `Bearer ${token}` } }
+//     );
+// }
 export const Logout = async(token)=>{
     return axios.post(`${API_BASE_URL}/user/logout`,{} ,{
         headers: { Authorization: `Bearer ${token}` },
@@ -111,3 +126,33 @@ export const getTransactionsByDate = async (token, page = 1, date = "") => {
         withCredentials: true 
     });
 };
+
+export const getBills = (token, page = 1, limit = 10) => {
+    return axios.get(`${API_BASE_URL}/bills?page=${page}&limit=${limit}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true 
+    });
+  };
+  
+  export const getBillDetails = (token, bill_id) => {
+    return axios.get(`${API_BASE_URL}/bills/detail?bill_id=${bill_id}`,{
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true 
+    });
+  };
+
+  export const getLedger = (token,vendor_id, start_date)=>{
+    
+    return axios.get(`${API_BASE_URL}/vendor/get_ledger?vendor_id=${vendor_id}`, {
+        params: { start_date },
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
+    });
+  };
+
+  export const searchProducts = async (query, token) => {
+    return await axios.get(`${API_BASE_URL}/search?query=${query}`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+  };
+

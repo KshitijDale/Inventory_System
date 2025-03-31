@@ -19,10 +19,12 @@ exports.allProducts = asynchandler(async (req,res)=>{
 
 exports.GetDetail = asynchandler(async (req, res) => {
     const prd_name = req.query.prd_name || "abc";
-    console.log("checkpoint : ", prd_name);
+    const pack = req.query.pack || "None";
+    const mfg = req.query.mfg || "Not Selected";
+    // console.log("checkpoint : ", prd_name);/
 
     // Find the product details
-    const product_details = await Product.findOne({ prd_name: prd_name });
+    const product_details = await Product.findOne({ prd_name: prd_name, pack: pack, mfg:mfg });
     if (!product_details) {
         throw new APIError(400, "The Product could not be found");
     }
@@ -44,7 +46,7 @@ exports.GetDetail = asynchandler(async (req, res) => {
 
 
 exports.productList = asynchandler(async (req,res)=>{
-    const products = await Product.find().select("prd_name");
+    const products = await Product.find().select("prd_name pack mfg");
     console.log("product.controlller: ",products);
     res.json({ products });
 })

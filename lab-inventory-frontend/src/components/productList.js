@@ -110,14 +110,16 @@
         getProducts(token)
           .then((response) => setProducts(response.data.products))
           .catch((error) => console.error("Error fetching products:", error));
+
+        
       }, []);
-    
+      
       const indexOfLastProduct = currentPage * productsPerPage;
       const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
       const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
     
       const chartData = currentProducts.map((product) => ({
-        name: product.prd_name,
+        name: `${product.prd_name} ${product.mfg}`,
         quantity: product.quant,
       }));
     
@@ -129,6 +131,8 @@
               <TableHead>
                 <TableRow>
                   <TableCell>Name</TableCell>
+                  <TableCell>Pack</TableCell>
+                  <TableCell>Manufacture</TableCell>
                   <TableCell>Price</TableCell>
                   <TableCell>Quantity</TableCell>
                 </TableRow>
@@ -138,10 +142,12 @@
                   <TableRow
                     key={product.id || product.prd_name}
                     hover
-                    onClick={() => navigate(`/product/${product.prd_name}`)}
+                    onClick={() => navigate(`/product/${product.prd_name}/${product.pack}/${product.mfg}`)}
                     style={{ cursor: "pointer" }}
                   >
                     <TableCell>{product.prd_name}</TableCell>
+                    <TableCell>{product.pack}</TableCell>
+                    <TableCell>{product.mfg}</TableCell>
                     <TableCell>{product.price}</TableCell>
                     <TableCell>{product.quant}</TableCell>
                   </TableRow>
