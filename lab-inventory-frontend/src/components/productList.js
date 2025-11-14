@@ -120,7 +120,7 @@
     
       const chartData = currentProducts.map((product) => ({
         name: `${product.prd_name} ${product.mfg}`,
-        quantity: product.quant,
+        quantity : Math.floor(product.quant / product.pack),
       }));
     
       return (

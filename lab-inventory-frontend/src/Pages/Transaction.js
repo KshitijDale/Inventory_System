@@ -421,10 +421,10 @@ const StockTransaction = () => {
             <Grid container spacing={1} sx={{ mt: 1 }}>
               <Grid item xs={6}>
                 <Typography variant="body2" color="text.secondary">
-                  Quantity:
+                  Units:
                 </Typography>
                 <Typography variant="body1" fontWeight="medium">
-                  {transaction.quantity}
+                  {transaction.units}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -456,7 +456,7 @@ const StockTransaction = () => {
         <TableHead>
           <TableRow sx={{ backgroundColor: theme.palette.grey[100] }}>
             <TableCell><Typography fontWeight="bold">Product Details</Typography></TableCell>
-            <TableCell><Typography fontWeight="bold">Quantity</Typography></TableCell>
+            <TableCell><Typography fontWeight="bold">Units</Typography></TableCell>
             <TableCell><Typography fontWeight="bold">Recorded By</Typography></TableCell>
             <TableCell><Typography fontWeight="bold">Date</Typography></TableCell>
           </TableRow>
@@ -470,7 +470,7 @@ const StockTransaction = () => {
                   {`${transaction.product?.pack || ""} | ${transaction.product?.mfg || ""}`}
                 </Typography>
               </TableCell>
-              <TableCell>{transaction.quantity}</TableCell>
+              <TableCell>{transaction.units}</TableCell>
               <TableCell>{transaction.recorded_by?.name || "Unknown User"}</TableCell>
               <TableCell>{new Date(transaction.time).toLocaleDateString()}</TableCell>
             </TableRow>

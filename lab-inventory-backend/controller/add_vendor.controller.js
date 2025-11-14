@@ -7,6 +7,7 @@ const asynchandler = require("../utils/asynchandler");
 exports.add_vendor = asynchandler(async (req,res)=>{
     const {vendor_name, vendor_addr} = req.body;
     const new_vendor = await Vendor.create({name: vendor_name, address: vendor_addr});
+    console.log("hello _testing in add_vendor.controller.js");
     res.json({ message: "Vendor is Created", vendor: new_vendor });
 });
 

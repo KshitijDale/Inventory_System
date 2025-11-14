@@ -26,7 +26,7 @@ const movement = asynchandler( async (stock,user_id)=>{
         { new: true }
     );
     
-    const new_movement = await Movement.create({product: product_details._id, recorded_by: user_id, quantity: quantity, comment: comment});
+    const new_movement = await Movement.create({product: product_details._id, recorded_by: user_id, units: quantity, comment: comment});
     console.log("Backend Checkpoint: ", new_movement);
     if(!new_movement){
         throw new APIError(400, "The movement could not be logged in");
@@ -53,7 +53,7 @@ exports.allMovements = asynchandler(async (req,res)=>{
     const name = req.query.name || "";
     if(name !== ""){
         const user_id = await User.findOne({name: name}).select("_id");
-        const movements = await Movement.find({recorded_by: user_id}).skip(skip).limit(limit).populate({
+        const movements = await Movement.find({recorded_by: user_id}).sort({ time: -1 }).skip(skip).limit(limit).populate({
             path: "product",
             select: "prd_name pack mfg"
         }).populate("recorded_by","name");
@@ -63,7 +63,7 @@ exports.allMovements = asynchandler(async (req,res)=>{
 
     const product = req.query.product || "";
     if(product !== ""){
-        const movements = await Movement.find({product: product}).skip(skip).limit(limit).populate({
+        const movements = await Movement.find({product: product}).sort({ time: -1 }).skip(skip).limit(limit).populate({
             path: "product",
             select: "prd_name pack mfg"
         }).populate("recorded_by","name");
@@ -86,7 +86,7 @@ exports.allMovements = asynchandler(async (req,res)=>{
     }
 
 
-    const movements = await Movement.find().skip(skip).limit(limit).populate({
+    const movements = await Movement.find().sort({ time: -1 }).skip(skip).limit(limit).populate({
         path: "product",
         select: "prd_name pack mfg"
     }).populate("recorded_by","name");

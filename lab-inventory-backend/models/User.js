@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
     login_id: { type: String, required: true, unique: true },
@@ -14,8 +14,9 @@ const userSchema = new mongoose.Schema({
   });
 
   userSchema.pre("save", async function(next){
-    if(!this.isModified("password")) return next();
 
+    if(!this.isModified("password")) return next();
+    console.log('Password received:', this.password);
     this.password = await bcrypt.hash(this.password,10);
     return next();
   })

@@ -15,7 +15,7 @@ const addtoDatabase = asynchandler(async (vendor_id, new_bill_id, product)=>{
     let product_detail = await Product.findOneAndUpdate(
         {prd_name: product_name, pack:pack || "None", mfg:mfg || "Not Selected"},
         {   
-            $inc : {quant : quantity},
+            $inc : {quant : quantity*pack},
             $set: {price: price}
         },
         {new : true}
@@ -23,7 +23,7 @@ const addtoDatabase = asynchandler(async (vendor_id, new_bill_id, product)=>{
 
     if(!product_detail){
         // here write the code to add the product
-        product_detail = await Product.create({prd_name: product_name,pack:pack || "None", mfg:mfg || "Not Selected", quant: quantity, price: price});
+        product_detail = await Product.create({prd_name: product_name,pack:pack || "None", mfg:mfg || "Not Selected", quant: quantity*pack, price: price});
     }
     const new_bill_item = await BillItem.create({bill : new_bill_id, product : product_detail._id, quantity: quantity, price:price});
     let new_vendorOfProduct =  await VendorOfProduct.findOneAndUpdate({product: product_detail._id, vendor: vendor_id},
