@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const API_BASE_URL = " http://10.30.37.130:5000/api";
-const API_BASE_URL = " http://10.30.65.220:5000/api"; // Adjust as per backend
+const API_BASE_URL = " https://inventory-system-op9e.onrender.com/api"; // Adjust as per backend
 
 export const loginUser = async (credentials) => {
     return axios.post(`${API_BASE_URL}/user/login`, credentials);
