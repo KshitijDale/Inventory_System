@@ -12,8 +12,9 @@ const cookieParser = require("cookie-parser");
 const morgan = require('morgan');
 let app = express();
 
+const allowedOrigin = process.env.FRONTEND_ORIGIN || "https://stellar-gingersnap-b6eb63.netlify.app" || "http://localhost:3000";
 app.use(cors({
-    origin: "https://stellar-gingersnap-b6eb63.netlify.app",  // Allow frontend requests also change to the wlp ip address when not rumming locally.  http://localhost:3000
+    origin: allowedOrigin,    
     credentials: true,  // Allow cookies and headers
     methods: "GET,POST,PUT,DELETE",  // Allowed request methods
     allowedHeaders: "Content-Type,Authorization"  // Allowed headers

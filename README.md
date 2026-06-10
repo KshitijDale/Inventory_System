@@ -87,6 +87,50 @@ Optional: to make API calls to the backend during development without adjusting 
 "proxy": "http://localhost:5000"
 ```
 
+Frontend checks before running
+- Node & npm: Ensure `node -v` and `npm -v` are installed (Node LTS >=16 recommended).
+- Dependencies: Run `npm install` inside `lab-inventory-frontend` before starting.
+- Backend availability: The frontend expects the backend API to be reachable at the address configured by either the `proxy` in `package.json` or a runtime env variable (see below). Ensure the backend is running on `http://localhost:5000` (or update the URL accordingly).
+- Environment variables: CRA reads env vars that start with `REACT_APP_`. If you need to point the frontend to a custom API URL use a `.env` file in the frontend root with e.g. `REACT_APP_API_URL=http://localhost:5000` and reference it in code as `process.env.REACT_APP_API_URL`.
+- CORS / Cookies: If the frontend uses cookies for auth, set `withCredentials: true` on axios/fetch and make sure the backend `FRONTEND_ORIGIN` or CORS allowlist includes the frontend origin.
+- Browser console: Watch for CORS, network or JS errors in DevTools when the app loads or calls the API.
+
+How to configure the API URL in the frontend
+- Option A (recommended for local dev): add `"proxy": "http://localhost:5000"` to `lab-inventory-frontend/package.json`. This lets you use relative API paths like `/api/product` in development.
+- Option B (recommended for environments): create `lab-inventory-frontend/.env` with:
+
+```
+REACT_APP_API_URL=http://localhost:5000
+```
+
+Then in the frontend code use it like:
+
+```js
+const apiUrl = process.env.REACT_APP_API_URL || '';
+axios.get(`${apiUrl}/api/product`, { withCredentials: true })
+```
+
+Running tests & build
+- Run unit tests (if present):
+
+```bat
+cd lab-inventory-frontend
+npm test
+```
+
+- Create a production build:
+
+```bat
+cd lab-inventory-frontend
+npm run build
+```
+
+Common frontend troubleshooting
+- Blank page / compilation errors: run `npm start` and read the terminal output; fix syntax or dependency errors displayed.
+- API 401/403 errors: ensure tokens/cookies are being sent and backend CORS allows origin + `credentials: true`.
+- API network errors: confirm `REACT_APP_API_URL` or `proxy` points at a running backend.
+
+
 ---
 
 **MongoDB: Local or Atlas**
