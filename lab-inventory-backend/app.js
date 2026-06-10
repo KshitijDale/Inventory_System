@@ -13,7 +13,7 @@ const morgan = require('morgan');
 let app = express();
 
 app.use(cors({
-    origin: "http://localhost:3000",  // Allow frontend requests also change to the wlp ip address when not rumming locally.  http://localhost:3000
+    origin: "https://stellar-gingersnap-b6eb63.netlify.app",  // Allow frontend requests also change to the wlp ip address when not rumming locally.  http://localhost:3000
     credentials: true,  // Allow cookies and headers
     methods: "GET,POST,PUT,DELETE",  // Allowed request methods
     allowedHeaders: "Content-Type,Authorization"  // Allowed headers
